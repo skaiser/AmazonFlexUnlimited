@@ -14,41 +14,44 @@ try:
 except:
   pass
 
-APP_NAME = "com.amazon.rabbit"
-APP_VERSION = "303338310"
-DEVICE_NAME = "Le X522"
-MANUFACTURER = "LeMobile"
-OS_VERSION = "LeEco/Le2_NA/le_s2_na:6.0.1/IFXNAOP5801910272S/61:user/release-keys"
+# APP_NAME = "com.amazon.rabbit"
+APP_NAME = "Amazon Flex"
+APP_VERSION = "0.0"
+DEVICE_NAME = "Stephen's 4th iOS Device"
+MANUFACTURER = "Apple"
+OS_VERSION = "17.3.1"
 
 class FlexUnlimited:
   allHeaders = {
     "AmazonApiRequest": {
       "x-amzn-identity-auth-domain": "api.amazon.com",
-      "User-Agent": "AmazonWebView/Amazon Flex/0.0/iOS/15.2/iPhone"
+      "User-Agent": "AmazonWebView/Amazon Flex/0.0/iOS/17.3.1/iPhone"
     },
     "FlexCapacityRequest": {
       "Accept": "application/json",
       "x-amz-access-token": None,
       "Authorization": "RABBIT3-HMAC-SHA256 SignedHeaders=x-amz-access-token;x-amz-date, "
-                       "Signature=82e65bd06035d5bba38c733ac9c48559c52c7574fb7fa1d37178e83c712483c0",
+                       "Signature=eef7d3bd5d82581e288a567d18e7ca714c699bee181ffe04efee33314d45908d",
       "X-Amz-Date": None,
       "Accept-Encoding": "gzip, deflate, br",
-      "x-flex-instance-id": "BEEBE19A-FF23-47C5-B1D2-21507C831580",
+      "x-flex-instance-id": "BBE946E4-FECD-4330-B430-DAEB92327769",
       "Accept-Language": "en-US",
       "Content-Type": "application/json",
-      "User-Agent": "iOS/16.1 (iPhone Darwin) Model/iPhone Platform/iPhone14,2 RabbitiOS/2.112.2",
+      "User-Agent": "iOS/17.3.1 (iPhone Darwin) Model/iPhone Platform/iPhone14,4 RabbitiOS/2.128.3",
       "Connection": "keep-alive",
-      "Cookie": 'session-id=147-7403990-6925948; session-id-time=2082787201l; '
-                'session-token=1mGSyTQU1jEQgpSB8uEn6FFHZ1iBcFpe9V7LTPGa3GV3sWf4bgscBoRKGmZb3TQICu7PSK5q23y3o4zYYhP'
-                '/BNB5kHAfMvWcqFPv/0AV7dI7desGjE78ZIh+N9Jv0KV8c3H/Xyh0OOhftvJQ5eASleRuTG5+TQIZxJRMJRp84H5Z+YI'
-                '+IhWErPdxUVu8ztJiHaxn05esQRqnP83ZPxwNhA4uwaxrT2Xm; '
-                'at-main="Atza|IwEBIB4i78dwxnHVELVFRFxlWdNNXzFreM2pXeOHsic9Xo54CXhW0m5juyNgKyCL6KT_9bHrQP7VUAIkxw'
-                '-nT2JH12KlOuYp6nbdv-y6cDbV5kjPhvFntPyvBEYcl405QleSzBtH_HUkMtXcxeFYygt8l-KlUA8-JfEKHGD14'
-                '-oluobSCd2UdlfRNROpfRJkICzo5NSijF6hXG4Ta3wjX56bkE9X014ZnVpeD5uSi8pGrLhBB85o4PKh55ELQh0fwuGIJyBcyWSpGPZb5'
-                'uVODSsXQXogw7HCFEoRnZYSvR_t7GF5hm_78TluPKUoYzvw4EVfJzU"; '
-                'sess-at-main="jONjae0aLTmT+yqJV5QC+PC1yiAdolAm4zRrUlcnufM="; '
-                'ubid-main=131-1001797-1551209; '
-                'x-main="ur180BSwQksvu@cBWH@IQejqHw6ZYkMDKkwbdOwJvEeVZWlh15tnxZdleqfq9qO0"'
+      "Cookie": 'session-id=136-5500057-6492553; session-id-time=2342200573l; '
+                'session-token=Zs/uyvQDU4mnjO6W8TRfMhYWJ1H4zEtzfnULvTXuUUD6zhI3Dr2qwsvAtWXmWTve/S0vl6+'
+                '73mKpC8C+cmbJrzF7V4DvogSijYsUXghdHo0gcB4WOZao5EdmsnhQCZ9XPwhV1Tej2wQ5wBqDYj79PrRB4suZ'
+                'LNUX6cfESeUHLC0Clnr1HOsBkVuTPOMpI+a3mDdo2aqaKlvM6K3j58naPFBH/nqK212m+ldHvHdmwgKN69f4'
+                '+4CKxVhqUYgJT6fta3L7RCR7ehAwDRUdO82rdI8z8wBL8+lvD+ydJXddi9mZt9AgcwCBKi+Krbxr8AZDdZrkd'
+                'Rafg02ddWwufgh86OdT8NJe9itmZag1FJVH9196sb5GGJzLClR6yS38cuVj; '
+                'at-main="Atza|IwEBIIt-0n2AAQo9LYLP9qBGbb--NyVl2o8n3q-XAK9AmHuR3YAkPZGK1IG0wmNWpzDQyFSwTRClDVkgybx14'
+                '-kX47Y0D8d821E_7IBarOWis4-wxYAlyQm5kGAGSHCBnc9V-EY0jShpJAzVMTkqpWniVFn7eimPBKgq5aNLXHFehZxod7Q_'
+                '_uzzU0l8AXp7wD6GVX4_Y8yr8Ol6GifAk9YOcfB7lkUCxIWPQsTccOrMA_PleF2EvvuIRnvynTATJdX9NuxZD5LRhDTeHtbgupkM'
+                'spyDc5SzuNb7Hl4gPkyMW2kDAWdWMesC2XWzpeA3mow5ds0"; '
+                'sess-at-main="z9x/GSzPfOttC1XiSG6NN84J+exP3avGuODIFqTkYUM="; '
+                'ubid-main=130-7585751-7988802; '
+                'x-main="rIGi3aFueuKjl2PKBO15W32on@HpaIs6"'
     }
   }
   routes = {
@@ -141,6 +144,7 @@ class FlexUnlimited:
     maplanding_url = input("Open the previous link (make sure to copy the entire link) in a browser, sign in, and enter the entire resulting URL here:\n")
     parsed_query = parse_qs(urlparse(maplanding_url).query)
     reg_access_token = unquote(parsed_query['openid.oa2.access_token'][0])
+    # reg_access_token = self.accessToken
     device_id = secrets.token_hex(16)
     amazon_reg_data = {
       "auth_data": {
@@ -151,14 +155,13 @@ class FlexUnlimited:
         "website_cookies": []
       },
       "device_metadata": {
-        "android_id": "52aee8aecab31ee3",
-        "device_os_family": "android",
+        "device_model": "iPhone",
         "device_serial": device_id,
-        "device_type": "A1MPSLFC7L5AFK",
+        "device_type": "A3NWHXTQ4EBCZS",
         "mac_address": secrets.token_hex(64).upper(),
         "manufacturer": MANUFACTURER,
         "model": DEVICE_NAME,
-        "os_version": "30",
+        "os_version": "17.3.1",
         "product": DEVICE_NAME
       },
       "registration_data": {
@@ -166,10 +169,10 @@ class FlexUnlimited:
         "app_version": APP_VERSION,
         "device_model": DEVICE_NAME,
         "device_serial": device_id,
-        "device_type": "A1MPSLFC7L5AFK",
+        "device_type": "A3NWHXTQ4EBCZS",
         "domain": "Device",
         "os_version": OS_VERSION,
-        "software_version": "130050002"
+        "software_version": "1"
       },
       "requested_extensions": [
         "device_info",
@@ -254,8 +257,8 @@ class FlexUnlimited:
       "source_token": self.refreshToken,
       "requested_token_type": "access_token",
     }
-    headers = {
-      "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 10; Pixel 2 Build/OPM1.171019.021)",
+    headers = { 
+      "User-Agent": "iOS/17.3.1 (iPhone Darwin) Model/iPhone Platform/iPhone14,4 RabbitiOS/2.128.3",
       "x-amzn-identity-auth-domain": "api.amazon.com",
     }
     res = self.session.post(FlexUnlimited.routes.get("RequestNewAccessToken"), json=data, headers=headers).json()
@@ -291,7 +294,7 @@ class FlexUnlimited:
         "domain": "Device",
         "app_version": "0.0",
         "device_type": "A3NWHXTQ4EBCZS",
-        "os_version": "15.2",
+        "os_version": "17.3.1",
         "device_serial": "0000000000000000",
         "device_model": "iPhone",
         "app_name": "Amazon Flex",
@@ -431,7 +434,8 @@ class FlexUnlimited:
       if deltaTime < self.arrivalBuffer:
         return
 
-    self.__acceptOffer(offer)
+    Log.info(offer.toString() + "\n--------------------------------")
+    # self.__acceptOffer(offer)
 
   def run(self):
     Log.info("Starting job search...")
@@ -444,7 +448,9 @@ class FlexUnlimited:
         currentOffers = offersResponse.json().get("offerList")
         currentOffers.sort(key=lambda pay: int(pay['rateInfo']['priceAmount']),
                            reverse=True)
+        # TODO: Sometimes this is repeating the list of offers
         for offer in currentOffers:
+          # Log.info("offer response" + print(offer))
           offerResponseObject = Offer(offerResponseObject=offer)
           self.__processOffer(offerResponseObject)
         self.__retryCount += 1
