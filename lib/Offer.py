@@ -1,7 +1,8 @@
 from datetime import datetime
 
 from lib.Log import Log
-
+from lib.colors import bcolors
+from lib.Locations import Locations
 
 class Offer:
 
@@ -15,14 +16,17 @@ class Offer:
         self.hidden = offerResponseObject.get("hidden")
         self.ratePerHour = self.blockRate / ((self.endTime - self.startTime).seconds / 3600)
         self.weekday = self.expirationDate.weekday()
+        self.isSurge = offerResponseObject.get('rateInfo').get('isSurge')
+        self.surgeMultiplier = offerResponseObject.get('rateInfo').get('surgeMultiplier')
+        self.projectedTips = float(offerResponseObject.get('rateInfo').get('projectedTips'))
     
     def toString(self) -> str:
         blockDuration = (self.endTime - self.startTime).seconds / 3600
 
-        body = 'Location: ' + self.location + '\n'
+        body = bcolors.HEADER + 'Location: ' + Locations.get(self.location) + bcolors.END + '\n'
         body += 'Date: ' + str(self.startTime.month) + '/' + str(self.startTime.day) + '\n'
         body += 'Pay: ' + str(self.blockRate) + '\n'
-        body += 'Pay rate per hour: ' + str(self.ratePerHour) + '\n'
+        body += 'Pay rate per hour: ' + f'{bcolors.OKCYAN if self.ratePerHour > 20.0 else ""}' + str(self.ratePerHour) + bcolors.END + '\n'
         body += 'Block Duration: ' + str(blockDuration) + f'{"hour" if blockDuration == 1 else "hours"}\n'
 
         if not self.startTime.minute:
@@ -38,5 +42,13 @@ class Offer:
             body += 'End time: ' + str(self.endTime.hour) + '0' + str(self.endTime.minute) + '\n'
         else:
             body += 'End time: ' + str(self.endTime.hour) + str(self.endTime.minute) + '\n'
+
+        if self.isSurge:
+            body += bcolors.OKGREEN + 'SURGE: ' + str(self.surgeMultiplier) + bcolors.END + '\n'
+        # elif self.isSurge:
+        #     body += bcolors.WARNING + 'SURGE: No multiplier' + bcolors.END +'\n'
+
+        if self.projectedTips > 0:
+            body += 'TIPS: ' + str(self.projectedTips) + '\n'
 
         return body
