@@ -1,13 +1,22 @@
 {
   "username": "",
   "password": "",
-  "minBlockRate": 150,
-  "minPayRatePerHour": 32,
+  "minBlockRate": 30,
+  "minPayRatePerHour": 22,
   "arrivalBuffer": 45,
+  "timeToLeaveBuffer": 30000,
   "desiredWarehouses": [],
-  "desiredStartTime": "00:00",
-  "desiredEndTime": "23:30",
-  "desiredWeekdays": ["MON", "tue", "Wed", "Thur", "Fri", "Sat", "Sunday"],
+  "desiredStartTime": "05:30",
+  "desiredEndTime": "18:30",
+  "desiredWeekdays": [
+    "MON",
+    "tue",
+    "Wed",
+    "Thur",
+    "Fri",
+    "Sat",
+    "Sunday"
+  ],
   "retryLimit": 10,
   "refreshInterval": 0.2,
   "twilioAcctSid": "",
@@ -15,5 +24,8 @@
   "twilioFromNumber": "",
   "twilioToNumber": "",
   "refreshToken": "",
-  "accessToken": ""
+  "accessToken": "",
+  "PUSHER_APP_TOKEN": "",
+  "PUSHER_USER_KEY": "",
+  "PUSHER_DEVICE": ""
 }

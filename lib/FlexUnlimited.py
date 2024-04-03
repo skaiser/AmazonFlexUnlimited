@@ -1,8 +1,10 @@
+from lib.colors import bcolors
 from lib.Offer import Offer
 from lib.Log import Log
+import http.client, urllib
 import requests, time, os, sys, json
 from requests.models import Response
-from datetime import datetime
+from datetime import datetime, timedelta
 from prettytable import PrettyTable
 from urllib.parse import unquote, urlparse, parse_qs
 import base64, hashlib, hmac, gzip, secrets
@@ -61,7 +63,8 @@ class FlexUnlimited:
     "RequestNewAccessToken": "https://api.amazon.com/auth/token",
     "ForfeitOffer": "https://flex-capacity-na.amazon.com/schedule/blocks/",
     "GetEligibleServiceAreas": "https://flex-capacity-na.amazon.com/eligibleServiceAreas",
-    "GetOfferFiltersOptions": "https://flex-capacity-na.amazon.com/getOfferFiltersOptions"
+    "GetOfferFiltersOptions": "https://flex-capacity-na.amazon.com/getOfferFiltersOptions",
+    "RealTimeAvailability": "https://flex-capacity-na.amazon.com/realTimeAvailability" # { "isAvailable": true|false } /person returns GET with state change
   }
 
   def __init__(self) -> None:
@@ -74,6 +77,7 @@ class FlexUnlimited:
         self.minBlockRate = config["minBlockRate"]
         self.minPayRatePerHour = config["minPayRatePerHour"]
         self.arrivalBuffer = config["arrivalBuffer"]  # arrival buffer in minutes
+        self.timeToLeaveBuffer = config["timeToLeaveBuffer"] # how much time needed to get ready to leave in minutes
         self.desiredStartTime = config["desiredStartTime"]  # start time in military time
         self.desiredEndTime = config["desiredEndTime"]  # end time in military time
         self.desiredWeekdays = set()
@@ -404,14 +408,64 @@ class FlexUnlimited:
 
     if request.status_code == 200:
       self.__acceptedOffers.append(offer)
-      if self.twilioClient is not None:
-        self.twilioClient.messages.create(
-          to=self.twilioToNumber,
-          from_=self.twilioFromNumber,
-          body=offer.toString())
+      # Mark last minute accepted offers as urgent notifications.
+      is_urgent = False
+      if self.arrivalBuffer and self.timeToLeaveBuffer:
+        is_urgent = offer.startTime - datetime.now() < timedelta(minutes=self.arrivalBuffer + self.timeToLeaveBuffer)
+
+      self.__sendPushNotif(msg=offer.toHTML(), title="Flex block scheduled!", is_urgent=is_urgent)
       Log.info(f"Successfully accepted an offer.")
     else:
       Log.error(f"Unable to accept an offer. Request returned status code {request.status_code}")
+
+  def __sendPushNotif(self, msg: str, title="", is_urgent=False):
+    PUSHER_APP_TOKEN = None
+    PUSHER_USER_KEY = None
+    PUSHER_DEVICE = None
+
+    try:
+      with open("config.json") as configFile:
+        config = json.load(configFile)
+        PUSHER_APP_TOKEN = config["PUSHER_APP_TOKEN"]
+        PUSHER_USER_KEY = config["PUSHER_USER_KEY"]
+        PUSHER_DEVICE = config["PUSHER_DEVICE"]
+    except KeyError as nullKey:
+      Log.error(f'{nullKey} was not set. Please setup FlexUnlimited as described in the README.')
+      sys.exit()
+    except FileNotFoundError:
+      Log.error("Config file not found. Ensure a properly formatted 'config.json' file exists in the root directory.")
+      sys.exit()
+
+    if PUSHER_APP_TOKEN is not None and PUSHER_USER_KEY is not None:
+      conn = http.client.HTTPSConnection("api.pushover.net:443")
+      unix_timestamp = (datetime.now() - datetime(1970, 1, 1)).total_seconds()
+      req = {
+        "token": PUSHER_APP_TOKEN,
+        "user": PUSHER_USER_KEY,
+        "message": msg,
+        "priority": 1,
+        "html": 1,
+        "timestamp": unix_timestamp,
+        "ttl": 3600
+      }
+      if PUSHER_DEVICE is not None:
+        req['device'] = PUSHER_DEVICE
+      
+      if title != "":
+        req['title'] = title
+
+      if is_urgent:
+        # TODO: add different sound
+        req['priority'] = 2
+        # These are required with priority=2. See https://pushover.net/api#priority
+        req['retry'] = 30
+        req['expire'] = 1800
+
+      conn.request("POST", "/1/messages.json", urllib.parse.urlencode(req), { "Content-type": "application/x-www-form-urlencoded" })
+      conn.getresponse()
+    else:
+      Log.error(bcolors.FAIL + "Unable to send push notification. Configure Pusher.net settings ing config.json" + bcolors.END)
+
 
   def __processOffer(self, offer: Offer):
     if offer.hidden:
@@ -434,7 +488,11 @@ class FlexUnlimited:
       if deltaTime < self.arrivalBuffer:
         return
 
-    Log.info(offer.toString() + "\n--------------------------------")
+    Log.info(offer.toString(True) + "\n--------------------------------")
+    if offer.id == "Ok9mZmVySWQuRW5jcnlwdGlvbktleS02aGlZbDQAAACDDtWCQwmuLr5tJZbLlTawLohz7rveFJ5Il3+r7p0D6BSmhpWkZJ1OkwIOWOrjhCVhmyiYg9HAH2q8e0F8ShWf676rH5ZIoHtsp6lWRDWNChkHLgk6C6oVkYW/AEaB4bVJR+oIaZyC+TrKxOy7l7pgYYP50DLOEwKivsI1pkvQXWb1vwBGuZTnBbSKixN4ZRzw6H9IaprJ20MDtW+jm8EIXgXRv2tcEOi7v8rprYUkoFI1enoCUD/Clz0Kndk0XTKfiKlEkDPXGgMwlmDOGL9zSE7SOZ98KcdsdfQs0XM/scOjR1Q9YtzO9LAAGfXR5D4qFu8zKDJSSdl4YZwwnilYJ4EtcloWEWrm/uK/BgNwczos3hUXPRaJJd9IvadrDwqlnx5fUh/SXEtvaVIvui0oqNTXXFKy6J39R9ANV4PYcdXZQf7PnkwEuzHWrbAtV1RH7N2UDQciy5EO0xEVXhvYGg==|x/uka/G6Qmq9q/Pse3t+Zc9yI65L2ijKwvRp0hXD+20=":
+      Log.info("sending notif")
+      is_urgent = offer.startTime - datetime.now() < timedelta(minutes=self.arrivalBuffer + self.timeToLeaveBuffer)
+      self.__sendPushNotif(msg=offer.toHTML(), title="Flex block scheduled!", is_urgent=is_urgent)
     # self.__acceptOffer(offer)
 
   def run(self):
@@ -448,12 +506,14 @@ class FlexUnlimited:
         currentOffers = offersResponse.json().get("offerList")
         currentOffers.sort(key=lambda pay: int(pay['rateInfo']['priceAmount']),
                            reverse=True)
-        # TODO: Sometimes this is repeating the list of offers
+        Log.info("Showing " + str(len(currentOffers)) + " offers")
         for offer in currentOffers:
           # Log.info("offer response" + print(offer))
           offerResponseObject = Offer(offerResponseObject=offer)
           self.__processOffer(offerResponseObject)
-        self.__retryCount += 1
+        # We got a respsonse, so don't need to keep trying.
+        # TODO: Will this still be ok to do if the AcceptOffer fails?
+        self.__retryCount = self.retryLimit
       elif offersResponse.status_code == 400:
         minutes_to_wait = 30 * self.__rate_limit_number
         Log.info("Rate limit reached. Waiting for " + str(minutes_to_wait) + " minutes.")
