@@ -1,5 +1,5 @@
 from lib.colors import bcolors
-from lib.Offer import Offer
+from lib.Offer import Offer, toCurrency
 from lib.Log import Log
 import http.client, urllib
 import requests, time, os, sys, json
@@ -33,27 +33,31 @@ class FlexUnlimited:
       "Accept": "application/json",
       "x-amz-access-token": None,
       "Authorization": "RABBIT3-HMAC-SHA256 SignedHeaders=x-amz-access-token;x-amz-date, "
-                       "Signature=eef7d3bd5d82581e288a567d18e7ca714c699bee181ffe04efee33314d45908d",
+                       "Signature=aa6f7379d687e1063aa1a49405fb2b1eb6c5fe7672c759f77c9737fa42d4e758",
       "X-Amz-Date": None,
       "Accept-Encoding": "gzip, deflate, br",
       "x-flex-instance-id": "BBE946E4-FECD-4330-B430-DAEB92327769",
+      "Signature-Input": '"x-amzn-attest=("@path" "x-amzn-marketplace-id" "user-agent");created=1712502237;nonce=1712502237;alg="apple-attest";keyid="AQICAHg21E9N4cqPKrpywXBTFl2Ivrk5dxuqSkVKL5WYaXPSMgHjVNQCwTr1vyn20a2YDk6pAAABLTCCASkGCSqGSIb3DQEHBqCCARowggEWAgEAMIIBDwYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAx0QaeLncwQpQ1hVgYCARCAgeGrS5FLwNBZ1CEYgOGwgQDqD+j908q7fSF6uDH4kmDztR359U2gPlo1stLvzAPnjlC1Mu8jdXRUeGrQmigTFOT+RlsK7ipOE+ojVAAudMH6zyIS448HBd5dG4yKi0dyOT7N75kQ/5mlu9bzyjyQ7+jxFmcwoXbHeTVHPhuDYmC7df9i0qZ9Nb5Br0QZ4HPRBZ6FxC2AYEWcYnYM5b4pKoUp1XfS2leOcRro/TMQTQ6G+vjEb3Dtg2ItW4tNstgI5nFUklwlX749rhn7eU7+MYUYb7nDh0ydLHKmnPV4xkQNik0="',
+      "Signature": "x-amzn-attest=:omlzaWduYXR1cmVYSDBGAiEAuk3BXOs9kz4AC5yOFTd+5tA61HvVGJjZ33DeiSi+7E8CIQD21R9zCDFPUoGCK0YqTxG65btLJKMZzESzssx1wVBRK3FhdXRoZW50aWNhdG9yRGF0YVgl7fPChS0bmEM9b1O14jz2TkRRyM28WLBf6EIHxvfTZflAAAAFIg==:",
       "Accept-Language": "en-US",
       "Content-Type": "application/json",
       "User-Agent": "iOS/17.3.1 (iPhone Darwin) Model/iPhone Platform/iPhone14,4 RabbitiOS/2.128.3",
       "Connection": "keep-alive",
-      "Cookie": 'session-id=136-5500057-6492553; session-id-time=2342200573l; '
-                'session-token=Zs/uyvQDU4mnjO6W8TRfMhYWJ1H4zEtzfnULvTXuUUD6zhI3Dr2qwsvAtWXmWTve/S0vl6+'
-                '73mKpC8C+cmbJrzF7V4DvogSijYsUXghdHo0gcB4WOZao5EdmsnhQCZ9XPwhV1Tej2wQ5wBqDYj79PrRB4suZ'
-                'LNUX6cfESeUHLC0Clnr1HOsBkVuTPOMpI+a3mDdo2aqaKlvM6K3j58naPFBH/nqK212m+ldHvHdmwgKN69f4'
-                '+4CKxVhqUYgJT6fta3L7RCR7ehAwDRUdO82rdI8z8wBL8+lvD+ydJXddi9mZt9AgcwCBKi+Krbxr8AZDdZrkd'
-                'Rafg02ddWwufgh86OdT8NJe9itmZag1FJVH9196sb5GGJzLClR6yS38cuVj; '
-                'at-main="Atza|IwEBIIt-0n2AAQo9LYLP9qBGbb--NyVl2o8n3q-XAK9AmHuR3YAkPZGK1IG0wmNWpzDQyFSwTRClDVkgybx14'
-                '-kX47Y0D8d821E_7IBarOWis4-wxYAlyQm5kGAGSHCBnc9V-EY0jShpJAzVMTkqpWniVFn7eimPBKgq5aNLXHFehZxod7Q_'
-                '_uzzU0l8AXp7wD6GVX4_Y8yr8Ol6GifAk9YOcfB7lkUCxIWPQsTccOrMA_PleF2EvvuIRnvynTATJdX9NuxZD5LRhDTeHtbgupkM'
-                'spyDc5SzuNb7Hl4gPkyMW2kDAWdWMesC2XWzpeA3mow5ds0"; '
-                'sess-at-main="z9x/GSzPfOttC1XiSG6NN84J+exP3avGuODIFqTkYUM="; '
-                'ubid-main=130-7585751-7988802; '
-                'x-main="rIGi3aFueuKjl2PKBO15W32on@HpaIs6"'
+      "x-amzn-marketplace-id": "ATVPDKIKX0DER",
+      "Cookie": 'at-main="Atza|IwEBIHNT_FzFqv2AVyP99Vok-jcCqSy4wYBFdSTwAkOJvH_EKf_HESXUJCIjldA28l8VJtuoV0pid91PP8hs_IxQui6Rbq_5Cd33qxWhsSGWq3pG3FalhVWo4qIwlBJ-_Z56qVWBaxzrTgZMLdO__lXvUdjT6pC0hyNO6pu_mYM8P4t8T3H0M8Wb1fgIXwn2aXL5rgY9tsboaeDPCgHdUKMVLJTrATe8VPZ6jKD1X8XDyNmlhIR7deKS1a0GkcJQPa6mXTWK-BybGKCsZ69mHVMot9-X7acXMW2gQDR6z4IvYi4W7374AOlqVhAwOFebWWbHW8Y"; sess-at-main="44IwrzdqDmtgMGU4OVponvFEq1zm8Ws3VRiFKqHzbEk="; session-id=134-1388043-5756611; ubid-main=131-4248611-5810966; x-main="hxBEF9uS893CgQCSihhjFY9nABxLQ?cc"; session-id-time=2342811776l; session-token=Fq5IUpZ26QxXooUC0bsqePhF92qmVcbzgb/3Ms2A2MgLZej2iCmZwjjKGm6tIRTFn9Ep3I0V/HQ0Yg3M68rd1JEd5thLsGZrg0tc1LZXWOFFgVr8h3pUeJrqldhxGxGSLfHNEVbB9eOkbL9vUK8n/wJ0u8AS8h/FRp66M41fzhvEcCDQw9U0NSV1W7gmlxor18A+Bg6yUqB409r2/InjQL0GnFJF2phAvb/xs+5ey7f9UFtTpzcokpVYFYUj+A44enj7rPTpjzESfASaSEPgt/orYWtak3AWxFAOCLb+lcxTeYHJvyKRLsqnlCHXgwDBdITBvivgq88KwnN1TTWOZ2PnBGA+9QMCg2PnkkxegSbhcAV8rBCBc5CBOXyBp0Qk'
+      # "Cookie": 'session-id=136-5500057-6492553; session-id-time=2342200573l; '
+      #           'session-token=Zs/uyvQDU4mnjO6W8TRfMhYWJ1H4zEtzfnULvTXuUUD6zhI3Dr2qwsvAtWXmWTve/S0vl6+'
+      #           '73mKpC8C+cmbJrzF7V4DvogSijYsUXghdHo0gcB4WOZao5EdmsnhQCZ9XPwhV1Tej2wQ5wBqDYj79PrRB4suZ'
+      #           'LNUX6cfESeUHLC0Clnr1HOsBkVuTPOMpI+a3mDdo2aqaKlvM6K3j58naPFBH/nqK212m+ldHvHdmwgKN69f4'
+      #           '+4CKxVhqUYgJT6fta3L7RCR7ehAwDRUdO82rdI8z8wBL8+lvD+ydJXddi9mZt9AgcwCBKi+Krbxr8AZDdZrkd'
+      #           'Rafg02ddWwufgh86OdT8NJe9itmZag1FJVH9196sb5GGJzLClR6yS38cuVj; '
+      #           'at-main="Atza|IwEBIIt-0n2AAQo9LYLP9qBGbb--NyVl2o8n3q-XAK9AmHuR3YAkPZGK1IG0wmNWpzDQyFSwTRClDVkgybx14'
+      #           '-kX47Y0D8d821E_7IBarOWis4-wxYAlyQm5kGAGSHCBnc9V-EY0jShpJAzVMTkqpWniVFn7eimPBKgq5aNLXHFehZxod7Q_'
+      #           '_uzzU0l8AXp7wD6GVX4_Y8yr8Ol6GifAk9YOcfB7lkUCxIWPQsTccOrMA_PleF2EvvuIRnvynTATJdX9NuxZD5LRhDTeHtbgupkM'
+      #           'spyDc5SzuNb7Hl4gPkyMW2kDAWdWMesC2XWzpeA3mow5ds0"; '
+      #           'sess-at-main="z9x/GSzPfOttC1XiSG6NN84J+exP3avGuODIFqTkYUM="; '
+      #           'ubid-main=130-7585751-7988802; '
+      #           'x-main="rIGi3aFueuKjl2PKBO15W32on@HpaIs6"'
     }
   }
   routes = {
@@ -393,18 +397,19 @@ class FlexUnlimited:
 
   def __acceptOffer(self, offer: Offer):
     self.__requestHeaders["X-Amz-Date"] = self.__getAmzDate()
+    formatted_offer_id = str(offer.id).replace('/', '\/')
 
     request = self.session.post(
       FlexUnlimited.routes.get("AcceptOffer"),
       headers=self.__requestHeaders,
-      json={"offerId": offer.id})
+      json={"offerId": formatted_offer_id})
 
     if request.status_code == 403:
       self.__getFlexAccessToken()
       request = self.session.post(
         FlexUnlimited.routes.get("AcceptOffer"),
         headers=self.__requestHeaders,
-        json={"offerId": offer.id})
+        json={"offerId": formatted_offer_id})
 
     if request.status_code == 200:
       self.__acceptedOffers.append(offer)
@@ -414,7 +419,7 @@ class FlexUnlimited:
         is_urgent = offer.startTime - datetime.now() < timedelta(minutes=self.arrivalBuffer + self.timeToLeaveBuffer)
 
       self.__sendPushNotif(msg=offer.toHTML(), title="Flex block scheduled!", is_urgent=is_urgent)
-      Log.info(f"Successfully accepted an offer.")
+      Log.info(f"Successfully accepted an offer.\n" + offer.toString())
     else:
       Log.error(f"Unable to accept an offer. Request returned status code {request.status_code}")
 
@@ -455,7 +460,7 @@ class FlexUnlimited:
         req['title'] = title
 
       if is_urgent:
-        # TODO: add different sound
+        req['sound'] = "alert-simple-triple"
         req['priority'] = 2
         # These are required with priority=2. See https://pushover.net/api#priority
         req['retry'] = 30
@@ -488,11 +493,15 @@ class FlexUnlimited:
       if deltaTime < self.arrivalBuffer:
         return
 
-    Log.info(offer.toString(True) + "\n--------------------------------")
-    if offer.id == "Ok9mZmVySWQuRW5jcnlwdGlvbktleS02aGlZbDQAAACDDtWCQwmuLr5tJZbLlTawLohz7rveFJ5Il3+r7p0D6BSmhpWkZJ1OkwIOWOrjhCVhmyiYg9HAH2q8e0F8ShWf676rH5ZIoHtsp6lWRDWNChkHLgk6C6oVkYW/AEaB4bVJR+oIaZyC+TrKxOy7l7pgYYP50DLOEwKivsI1pkvQXWb1vwBGuZTnBbSKixN4ZRzw6H9IaprJ20MDtW+jm8EIXgXRv2tcEOi7v8rprYUkoFI1enoCUD/Clz0Kndk0XTKfiKlEkDPXGgMwlmDOGL9zSE7SOZ98KcdsdfQs0XM/scOjR1Q9YtzO9LAAGfXR5D4qFu8zKDJSSdl4YZwwnilYJ4EtcloWEWrm/uK/BgNwczos3hUXPRaJJd9IvadrDwqlnx5fUh/SXEtvaVIvui0oqNTXXFKy6J39R9ANV4PYcdXZQf7PnkwEuzHWrbAtV1RH7N2UDQciy5EO0xEVXhvYGg==|x/uka/G6Qmq9q/Pse3t+Zc9yI65L2ijKwvRp0hXD+20=":
-      Log.info("sending notif")
-      is_urgent = offer.startTime - datetime.now() < timedelta(minutes=self.arrivalBuffer + self.timeToLeaveBuffer)
-      self.__sendPushNotif(msg=offer.toHTML(), title="Flex block scheduled!", is_urgent=is_urgent)
+    #Log.info(offer.toString(debug=True) + "\n--------------------------------")
+    #if offer.id == "Ok9mZmVySWQuRW5jcnlwdGlvbktleS02aGlZbDQAAACDDtWCQwmuLr5vIJDLnTiyK4hx473RFJgbknyr6ZADvRTx1cSkZc0SxwNYXurjhCVhmyiYg9HAH2q8e0F8ShWf676pH8VKp3top/0DEzeNChsCdgk6B60bkYHrX0TS7+dJRLwHb5yC+WrAwrnpxe9gYYPzgTPOEwvz6MJupkTTXTz+uwBCvJO3B+WGhhN4ZRzw6H9IaprJ20MDtW+jm8EIXgXRv2tcEOi7v8rprYUkoFI1enoCUD/Clz0Kndk0XT6bgKlEkDPXGgM2wj7HTrp2GkTSbZpyecBpfKQv0Xpo4pX1HAc+Yo3M8ecDRf+AtTUsFes6e2FZTNwtMZk9ySxVdNcrd1NGEG3nrbnrAAwmdTx72xdAP0LRIo0Y6fptDA+uxB9cB0vYDRs8agcqvC8sroDQA1Hm7sD7EYAOAofbddDfE/jDnkpR7jHWrbAtV1RH9bRsb5NVZSkQKo0X79JS6Q==|kpPLk8wP7370t4BAoFRC2Sq5lEWi+Le7jlrrX6QyJK4=":
+    #  Log.info("sending notif")
+      # Log.info(str(offer.id).replace('/', '\/'))
+      #self.__acceptOffer(offer)
+      # TODO: get a real offer and test # self.__acceptOffer(offer) here
+    is_urgent = offer.startTime - datetime.now() < timedelta(minutes=self.arrivalBuffer + self.timeToLeaveBuffer)
+    title = 'Flex: ' + str(offer.blockDuration) + 'hr' + ' ' + str(toCurrency(offer.blockRate)) + '@' + str(toCurrency(offer.ratePerHour))
+    self.__sendPushNotif(msg=offer.toHTML(), title=title, is_urgent=is_urgent)
     # self.__acceptOffer(offer)
 
   def run(self):
@@ -506,7 +515,7 @@ class FlexUnlimited:
         currentOffers = offersResponse.json().get("offerList")
         currentOffers.sort(key=lambda pay: int(pay['rateInfo']['priceAmount']),
                            reverse=True)
-        Log.info("Showing " + str(len(currentOffers)) + " offers")
+        Log.info("Found " + str(len(currentOffers)) + " offers")
         for offer in currentOffers:
           # Log.info("offer response" + print(offer))
           offerResponseObject = Offer(offerResponseObject=offer)

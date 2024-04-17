@@ -13,22 +13,22 @@ class Offer:
         self.id = offerResponseObject.get("offerId")
         self.expirationDate = datetime.fromtimestamp(offerResponseObject.get("expirationDate"))
         self.startTime = datetime.fromtimestamp(offerResponseObject.get("startTime"))
+        self.endTime = datetime.fromtimestamp(offerResponseObject.get('endTime'))
         self.location = offerResponseObject.get('serviceAreaId')
         self.blockRate = float(offerResponseObject.get('rateInfo').get('priceAmount'))
-        self.endTime = datetime.fromtimestamp(offerResponseObject.get('endTime'))
+        self.blockDuration = (self.endTime - self.startTime).seconds / 3600
         self.hidden = offerResponseObject.get("hidden")
-        self.ratePerHour = self.blockRate / ((self.endTime - self.startTime).seconds / 3600)
+        self.ratePerHour = self.blockRate / self.blockDuration
         self.weekday = self.expirationDate.weekday()
         self.isSurge = offerResponseObject.get('rateInfo').get('isSurge')
         self.surgeMultiplier = offerResponseObject.get('rateInfo').get('surgeMultiplier')
         self.projectedTips = float(offerResponseObject.get('rateInfo').get('projectedTips'))
 
     def toHTML(self) -> str:
-        blockDuration = (self.endTime - self.startTime).seconds / 3600
         body = '<b>' + self.startTime.strftime("%A, %d. %B") + '</b>\n'
         body += '<b>' + self.startTime.strftime("%I:%M%p") + '-' + self.endTime.strftime("%I:%M%p") + '</b>\n'
         body += str(toCurrency(self.blockRate)) + '&nbsp;<font color="#ff0080">' + str(toCurrency(self.ratePerHour)) + '/hr</font>\n'
-        body += str(blockDuration) + f'{" hour" if blockDuration == 1 else " hours"}\n'
+        body += str(self.blockDuration) + f'{" hour" if self.blockDuration == 1 else " hours"}\n'
 
         if self.projectedTips > 0:
             body += '<b><font color="#00ff00" size="1">TIPS: ' + str(toCurrency(self.projectedTips)) + '</font></b>\n'
@@ -42,13 +42,11 @@ class Offer:
 
 
     def toString(self, debug = False) -> str:
-        blockDuration = (self.endTime - self.startTime).seconds / 3600
-
         body = bcolors.HEADER + 'Location: ' + Locations.get(self.location) + bcolors.END + '\n'
         body += 'Date: ' + str(self.startTime.month) + '/' + str(self.startTime.day) + '\n'
         body += 'Pay: ' + bcolors.FAIL + str(self.blockRate) + bcolors.END + '\n'
         body += 'Pay rate per hour: ' + f'{bcolors.FAIL if self.ratePerHour > 20.0 else ""}' + str(self.ratePerHour) + bcolors.END + '\n'
-        body += 'Block Duration: ' + str(blockDuration) + f'{"hour" if blockDuration == 1 else "hours"}\n'
+        body += 'Block Duration: ' + str(self.blockDuration) + f'{"hour" if self.blockDuration == 1 else "hours"}\n'
 
         if not self.startTime.minute:
             body += 'Start time: ' + str(self.startTime.hour) + '00\n'
